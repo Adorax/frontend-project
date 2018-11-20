@@ -20,7 +20,7 @@ class AddCar extends Component {
     // Save car and load cars and finally close modal
     handleSubmit = (event) => {
         event.preventDefault();
-        let newCar = {brand: this.state.brand, model: this.state.model, color: this.state.color, year: this.state.year, fuel: this.state.fuel};
+        let newCar = {brand: this.state.brand, model: this.state.model, color: this.state.color, year: this.state.year, fuel: this.state.fuel, price: this.state.price,};
         this.props.addCar(newCar);
         this.props.loadCars();
         this.refs.simpleDialog.hide();
@@ -37,12 +37,12 @@ class AddCar extends Component {
       return (
         <div>
           <Button style={{ margin: 10 }} variant="contained" color="primary" onClick={() => this.refs.simpleDialog.show()}><AddIcon /> New Car </Button>
-          <SkyLight hideOnOverlayClicked dialogStyles={addCarDialog} ref="simpleDialog" title="Hi, I'm a simple modal">
-            <TextField id="brand" label="Brand" placeholder="Placeholder" margin="normal" name="brand"
+          <SkyLight hideOnOverlayClicked dialogStyles={addCarDialog} ref="simpleDialog" title="Add a car">
+            <TextField id="brand" label="Brand" placeholder="Brand" margin="normal" name="brand"
               onChange={this.handleChange} value={this.state.brand} /><br></br>
             <TextField id="model" label="Model" placeholder="Model" margin="normal" name="model"
                 onChange={this.handleChange} value={this.state.model} /><br></br>
-            <TextField id="color" label="Color" placeholder="color" margin="normal" name="color"
+            <TextField id="color" label="Color" placeholder="Color" margin="normal" name="color"
                 onChange={this.handleChange} value={this.state.color} /><br></br>
             <TextField id="year" label="Year" placeholder="Year" margin="normal" name="year"
                 onChange={this.handleChange} value={this.state.year} /><br></br>

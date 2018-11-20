@@ -79,14 +79,14 @@ class Carlist extends Component {
       body: JSON.stringify(car)
     })
     .then(
-      this.setState({ snackbar: {message: 'Car updated', open: true}
-      //toast.success("Changes saved", {position: toast.POSITION.BOTTOM_LEFT})
+      this.setState({ snackbar: {message: 'Car updated', open: true,}})
+    //toast.success("Changes saved", {position: toast.POSITION.BOTTOM_LEFT})
     )
     .catch( err => console.error(err))
   }
 
   handleClose = (event, reason) => {
-      this.setState({ open: false });
+      this.setState({ snackbar: {message: '', open: false,}});
   };
 
   renderEditable = (cellInfo) => {
@@ -150,7 +150,13 @@ class Carlist extends Component {
           filterable: false,
           width: 100,
           accessor: '_links.self.href',
-          Cell: ({value, row}) => (<button className="btn btn-default btn-link" onClick={()=>{this.updateCar(row, value)}}>Save</button>)
+          Cell: ({value, row}) => (
+                <Tooltip title='Update' placement='right'>
+                    <IconButton onClick={() => this.updateCar(row,value)} aria-label='update'>
+                        <SaveIcon />
+                    </IconButton>
+                </Tooltip>
+            )
         },
         {
           id: 'button',
@@ -158,24 +164,15 @@ class Carlist extends Component {
           filterable: false,
           width: 100,
           accessor: '_links.self.href',
-          Cell: ({value}) => (<button className="btn btn-default btn-link" onClick={()=>{this.onDelClick(value)}}>Delete</button>)
-        }
-      ]
-        /*  Cell: ({ row, value }) => (
-              <Tooltip title='Update' placement='right'>
-                  <IconButton onClick={() => this.updateCar(row,value)} aria-label='update'>
-                      <SaveIcon />
-                  </IconButton>
-              </Tooltip>
-          )
-
-          Cell: ({ value }) => (
+          Cell: ({value}) => (
               <Tooltip title='Delete' placement='right'>
-                  <IconButton onClick={() => this.deleteCar(value)} aria-label='delete'>
+                  <IconButton onClick={() => this.onDelClick(value)} aria-label='delete'>
                       <DeleteIcon />
                   </IconButton>
               </Tooltip>
-          )*/
+          )
+        }
+      ]
 
       return (
           <div className="App-body">
@@ -195,19 +192,11 @@ class Carlist extends Component {
                 <Button key="undo" color="secondary" size="small" onClick={this.handleClose}>
                   UNDO
                 </Button>,
-                <IconButton
-                  key="close"
-                  aria-label="Close"
-                  color="inherit"
-                  onClick={this.handleClose}
-                >
+                <IconButton key="close" aria-label="Close" color="inherit" onClick={this.handleClose} >
                   <CloseIcon />
                 </IconButton>,
               ]}
             />
-            <ToastContainer autoClose={2000}/>
-            //Snackbar give an error depreciate
-            //Toast is react basic notif, Snackbar is material-ui
           </div>
       );
   }
@@ -215,3 +204,7 @@ class Carlist extends Component {
 
 
 export default Carlist;
+
+//<ToastContainer autoClose={2000}/>
+//Snackbar give an error depreciate
+//Toast is react basic notif, Snackbar is material-ui
