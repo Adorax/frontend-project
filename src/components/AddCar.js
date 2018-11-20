@@ -9,7 +9,7 @@ class AddCar extends Component {
     constructor(props) {
         super(props);
         //this.addModal = React.createRef();
-        this.state = { brand: '', model: '', year: '', color: '', fuel: '' };
+        this.state = { brand: '', model: '', year: '', color: '', fuel: '', price: ''};
     }
 
     handleChange = (event) => {
@@ -22,8 +22,11 @@ class AddCar extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         let newCar = {brand: this.state.brand, model: this.state.model, color: this.state.color, year: this.state.year, fuel: this.state.fuel};
+        console.log("OK");
         this.props.addCar(newCar);
+        console.log("OK1");
         this.props.loadCars();
+        console.log("OK2");
         this.refs.simpleDialog.hide();
     }
 
@@ -31,15 +34,14 @@ class AddCar extends Component {
       // Add car page doesn't fit to default size modal
       const addCarDialog = {
         width: '70%',
-        height: '450px',
         marginTop: '-300px',
         marginLeft: '-35%',
       };
 
       return (
         <div>
-          <Button style={{ margin: 10 }} variant="contained" color="primary" onClick={() => this.addModal.current.show()}><AddIcon /> New Car </Button>
-          <SkyLight hideOnOverlayClicked dialogStyles={addCarDialog} ref={this.addModal} title="Hi, I'm a simple modal">
+          <Button style={{ margin: 10 }} variant="contained" color="primary" onClick={() => this.refs.simpleDialog.show()}><AddIcon /> New Car </Button>
+          <SkyLight hideOnOverlayClicked dialogStyles={addCarDialog} ref="simpleDialog" title="Hi, I'm a simple modal">
             <TextField id="brand" label="Brand" placeholder="Placeholder" margin="normal" name="brand"
               onChange={this.handleChange} value={this.state.brand} /><br></br>
             <TextField id="model" label="Model" placeholder="Model" margin="normal" name="model"
@@ -52,10 +54,10 @@ class AddCar extends Component {
                 onChange={this.handleChange} value={this.state.fuel} /><br></br>
             <TextField id="price" label="Price" placeholder="Price" margin="normal" name="price"
                 onChange={this.handleChange} value={this.state.price} /><br></br>
-            <Button style={{ margin: 10 }} variant="contained" color="secondary" onClick={this.saveCar}><SaveIcon /> Save Car </Button>
+            <Button style={{ margin: 10 }} variant="contained" color="secondary" onClick={this.handleSubmit}><SaveIcon /> Save Car </Button>
           </SkyLight>
 
-          <SkyLight dialogStyles={addCarDialog} hideOnOverlayClicked ref="simpleDialog">
+          <SkyLight dialogStyles={addCarDialog} hideOnOverlayClicked ref="simpleDialogs">
                 <div className="card" style={{"width": "95%"}}>
                 <div className="card-body">
                 <h5 className="card-title">New car</h5>
@@ -84,7 +86,7 @@ class AddCar extends Component {
                 </div>
           </SkyLight>
           <div className="col-md-2">
-              <button style={{'margin': '10px'}} className="btn btn-primary" onClick={() => this.refs.simpleDialog.show()}>New car</button>
+              <button style={{'margin': '10px'}} className="btn btn-primary" onClick={() => this.refs.simpleDialogs.show()}>New car</button>
           </div>
         </div>
       );

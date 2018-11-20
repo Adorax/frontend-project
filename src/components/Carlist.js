@@ -8,10 +8,12 @@ import {CSVLink, CSVDownload} from 'react-csv';
 import AddCar from './AddCar';
 
 import Snackbar from '@material-ui/core/Snackbar';
+import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Tooltip from '@material-ui/core/Tooltip';
 import SaveIcon from '@material-ui/icons/Save';
+import CloseIcon from '@material-ui/icons/Close';
 
 class Carlist extends Component {
 
@@ -49,20 +51,42 @@ class Carlist extends Component {
   // Delete car
   onDelClick = (idLink) => {
     confirmAlert({
+      title: 'Delete',
+      message: 'Are you sure you want to delete this?',
+      buttons: [
+        {
+          label: 'Ok',
+          onClick: () => {
+            fetch(idLink, {method: 'DELETE'})
+            .then(res => {this.setState({ showSnackbar: true }); this.loadCars() ;})
+            .catch(err => console.error(err))
+
+            toast.success("Delete succeed", {
+              position: toast.POSITION.BOTTOM_LEFT
+            });
+          }
+        },
+        {
+          label: 'Cancel',
+        }
+      ]
+    })
+    /*confirmAlert({
       title: '',
       message: 'Are you sure you want to delete this?',
-      confirmLabel: 'OK',
+      confirmLabel: 'OKbhjvhvghvgv',
       cancelLabel: 'CANCEL',
       onConfirm: () => {
+          console.log(idLink+"zgzg");
         fetch(idLink, {method: 'DELETE'})
-        .then(res => this.loadCars())//this.setState({ showSnackbar: true })
+        .then(res => {this.setState({ showSnackbar: true }); this.loadCars() ;})
         .catch(err => console.error(err))
 
         toast.success("Delete succeed", {
           position: toast.POSITION.BOTTOM_LEFT
         });
       }
-    })
+    })*/
   }
 
   // Update car
@@ -81,9 +105,9 @@ class Carlist extends Component {
     .catch( err => console.error(err))
   }
 
-  /*handleClose = (event, reason) => {
+  handleClose = (event, reason) => {
       this.setState({ showSnackbar: false });
-  };*/
+  };
 
   renderEditable = (cellInfo) => {
     return (
@@ -180,12 +204,39 @@ class Carlist extends Component {
               <CSVLink style={{padding: 20}} data={this.state.cars}>Download CSV</CSVLink>
             </div>
             <ReactTable data={this.state.cars} columns={columns} filterable className="-highlight" defaultPageSize={10} />
-            <Snackbar message='Car deleteeeed' open={this.state.showSnackbar} onClose={this.handleClose} autoHideDuration={3000} />
+            <Snackbar
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              open={this.state.showSnackbar}
+              autoHideDuration={2000}
+              onClose={this.handleClose}
+              ContentProps={{
+                'aria-describedby': 'message-id',
+              }}
+              message={<span id="message-id">Car deleted</span>}
+              action={[
+                <Button key="undo" color="secondary" size="small" onClick={this.handleClose}>
+                  UNDO
+                </Button>,
+                <IconButton
+                  key="close"
+                  aria-label="Close"
+                  color="inherit"
+                  onClick={this.handleClose}
+                >
+                  <CloseIcon />
+                </IconButton>,
+              ]}
+            />
             <ToastContainer autoClose={2000}/>
-            //Toast is teacher, Snackbar is ben
+            //Snackbar give an error depreciate
+            //Toast is react basic notif, Snackbar is material-ui
           </div>
       );
   }
 }
+
 
 export default Carlist;
