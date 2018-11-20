@@ -8,7 +8,6 @@ import TextField from '@material-ui/core/TextField';
 class AddCar extends Component {
     constructor(props) {
         super(props);
-        //this.addModal = React.createRef();
         this.state = { brand: '', model: '', year: '', color: '', fuel: '', price: ''};
     }
 
@@ -22,11 +21,8 @@ class AddCar extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         let newCar = {brand: this.state.brand, model: this.state.model, color: this.state.color, year: this.state.year, fuel: this.state.fuel};
-        console.log("OK");
         this.props.addCar(newCar);
-        console.log("OK1");
         this.props.loadCars();
-        console.log("OK2");
         this.refs.simpleDialog.hide();
     }
 
@@ -56,8 +52,23 @@ class AddCar extends Component {
                 onChange={this.handleChange} value={this.state.price} /><br></br>
             <Button style={{ margin: 10 }} variant="contained" color="secondary" onClick={this.handleSubmit}><SaveIcon /> Save Car </Button>
           </SkyLight>
+        </div>
+      );
+    }
+}
 
-          <SkyLight dialogStyles={addCarDialog} hideOnOverlayClicked ref="simpleDialogs">
+export default AddCar;
+
+/*
+const styles = theme => ({
+    textField: {
+        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+        width: 200,
+    }
+});*/
+/*  //Teacher one
+         <SkyLight dialogStyles={addCarDialog} hideOnOverlayClicked ref="simpleDialogs">
                 <div className="card" style={{"width": "95%"}}>
                 <div className="card-body">
                 <h5 className="card-title">New car</h5>
@@ -87,20 +98,4 @@ class AddCar extends Component {
           </SkyLight>
           <div className="col-md-2">
               <button style={{'margin': '10px'}} className="btn btn-primary" onClick={() => this.refs.simpleDialogs.show()}>New car</button>
-          </div>
-        </div>
-      );
-    }
-}
-
-export default AddCar;
-
-/*
-const styles = theme => ({
-    textField: {
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        width: 200,
-    }
-});
-*/
+          </div> */

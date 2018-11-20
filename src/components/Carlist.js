@@ -19,7 +19,7 @@ class Carlist extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { cars: [], showSnackbar: false };
+    this.state = { cars: [], snackbar: {message: '', open: ''} };
   }
 
   componentDidMount() {
@@ -58,12 +58,9 @@ class Carlist extends Component {
           label: 'Ok',
           onClick: () => {
             fetch(idLink, {method: 'DELETE'})
-            .then(res => {this.setState({ showSnackbar: true }); this.loadCars() ;})
+            .then(res => {this.setState({ snackbar: {message: 'Car deleted', open: true} }); this.loadCars() ;})
             .catch(err => console.error(err))
-
-            toast.success("Delete succeed", {
-              position: toast.POSITION.BOTTOM_LEFT
-            });
+            //toast.success("Delete succeed", {position: toast.POSITION.BOTTOM_LEFT});
           }
         },
         {
@@ -71,22 +68,6 @@ class Carlist extends Component {
         }
       ]
     })
-    /*confirmAlert({
-      title: '',
-      message: 'Are you sure you want to delete this?',
-      confirmLabel: 'OKbhjvhvghvgv',
-      cancelLabel: 'CANCEL',
-      onConfirm: () => {
-          console.log(idLink+"zgzg");
-        fetch(idLink, {method: 'DELETE'})
-        .then(res => {this.setState({ showSnackbar: true }); this.loadCars() ;})
-        .catch(err => console.error(err))
-
-        toast.success("Delete succeed", {
-          position: toast.POSITION.BOTTOM_LEFT
-        });
-      }
-    })*/
   }
 
   // Update car
@@ -98,15 +79,14 @@ class Carlist extends Component {
       body: JSON.stringify(car)
     })
     .then(
-      toast.success("Changes saved", {
-        position: toast.POSITION.BOTTOM_LEFT
-      })
+      this.setState({ snackbar: {message: 'Car updated', open: true}
+      //toast.success("Changes saved", {position: toast.POSITION.BOTTOM_LEFT})
     )
     .catch( err => console.error(err))
   }
 
   handleClose = (event, reason) => {
-      this.setState({ showSnackbar: false });
+      this.setState({ open: false });
   };
 
   renderEditable = (cellInfo) => {
@@ -205,17 +185,12 @@ class Carlist extends Component {
             </div>
             <ReactTable data={this.state.cars} columns={columns} filterable className="-highlight" defaultPageSize={10} />
             <Snackbar
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              open={this.state.showSnackbar}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }}
+              open={this.state.snackbar.open}
               autoHideDuration={2000}
               onClose={this.handleClose}
-              ContentProps={{
-                'aria-describedby': 'message-id',
-              }}
-              message={<span id="message-id">Car deleted</span>}
+              ContentProps={{ 'aria-describedby': 'message-id', }}
+              message={<span id="message-id">{this.state.snackbar.message}</span>}
               action={[
                 <Button key="undo" color="secondary" size="small" onClick={this.handleClose}>
                   UNDO
